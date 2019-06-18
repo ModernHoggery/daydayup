@@ -3,7 +3,7 @@
 start:
 
     jmp entry
-    /*定义fat12文件格式*/
+
 entry:
     mov $0,%ax
     mov %ax,%ds
@@ -16,14 +16,6 @@ entry:
     mov $my,%si
     call puts
 
-
-/*
-this is a subfunction to display string
-usage: mov $address,%si
-       call puts
-or     mov $label,%si
-       call puts
-*/
 puts:
   movb (%si),%al
   add $1,%si
@@ -33,13 +25,12 @@ puts:
   movw $15,%bx
   int $0x10
   jmp puts
+
 finish:
-  ;hlt
+  hlt
   ret
 
-
-msg:
-	.asciz "\r\nmy bootloader is running"
+msg: .asciz "\r\nmy bootloader is running"
 my: .asciz "\r\nwelcome to YuanOS"
 
 .org 510
