@@ -1,7 +1,7 @@
 src=hello.S
 obj=hello.o
 elf=boot.elf
-boot=boot.out
+boot=boot.bin
 asm=boot.asm
 
 $(boot):$(hello.S)
@@ -11,7 +11,7 @@ $(boot):$(hello.S)
 	objdump -S $(elf) > $(asm)
 
 run:$(asm)
-	qemu -fda $(boot)
+	qemu-system-i386 -fda $(boot)
 
 clean:
 	-rm -f $(obj) $(elf) $(boot) $(asm)
