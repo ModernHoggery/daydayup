@@ -1,5 +1,5 @@
-src=hello.S
-obj=hello.o
+src=boot.S
+obj=boot.o
 elf=boot.elf
 boot=boot.bin
 asm=boot.asm
@@ -7,8 +7,8 @@ img=YuanOS.img
 
 boot:$(obj)
 	gcc -c $(src) -m32 -o $(obj)
-	ld -m elf_i386 $(obj) -e start -Ttext 0x7c00 -o $(elf)
-	objcopy -S -O binary -j .text $(elf) $(boot)
+	ld -o $(elf) $(obj) -Tboot.ld
+	objcopy -S -O binary $(elf) $(boot)
 	objdump -S $(elf) > $(asm)
 
 image:boot
