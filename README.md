@@ -1,45 +1,11 @@
 # daydayup #
 
-## Make image ##
+> During learning how to make an operating system, I noticed that the reference books are out of date, which often confuses me. So I write this note to help someone likes me.
 
-```
-src=hello.S
-obj=hello.o
-elf=boot.elf
-boot=boot.out
-asm=boot.asm
+## Hello World ##
 
-$(boot):$(hello.S)
-	gcc -c $(src) -m32 -o $(obj)
-	ld -m elf_i386 $(obj) -e start -Ttext 0x7c00 -o $(elf)
-	objcopy -S -O binary -j .text $(elf)  $(boot)
-	objdump -S $(elf) > $(asm)
+My fisrt code is displaying the "Hello World". It's the simple example, but contains a lot of useful information.
 
-fat12:
-	@dd if=/dev/zero of=$(boot) seek=1 count=2879 >> /dev/zero
-	@ls -al $(boot)
+### How does the computer run our code ###
 
-run:$(asm)
-	qemu -fda $(boot)
-
-writeusb:fat12
-	sudo dd if=$(boot) of=/dev/sdb
-runusb:writeusb
-	sudo qemu   -drive file=/dev/sdb,if=floppy
-clean:
-	-rm -f $(obj) $(elf) $(boot) $(asm)
-```
-
-In this Makefile, *hello.S* is the source code.
-> gcc -c hello.S -o hello.o
-
-According to the above command, we can get the *obj_file*. In fact, parameter *-c* work.
-> ld
-
-To link the *obj_file* and generate binary file as the format of ELF.
-> objcopy
-
-To trans the format of binary file, [for more](https://blog.csdn.net/linux12121/article/details/82932535).
-> objdump
-
-To disassemble, [for more](https://blog.csdn.net/q2519008/article/details/82349869). However, it's not important for us to known.
+After compiling, our code is stored in the hard disk with binary form. BIOS loads the 512 bytes from the beginning of hard disk automatically to memory addressed 0x00007c00, then our code is executed. 
